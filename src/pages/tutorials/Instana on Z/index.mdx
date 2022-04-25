@@ -1,0 +1,431 @@
+---
+title: Introduction to IBM Observability By Instana APM for z/OS
+description:
+---
+
+
+<AnchorLinks>
+  <AnchorLink>2-1: </AnchorLink>
+  <AnchorLink>2-1: </AnchorLink>
+  <AnchorLink>2-3: </AnchorLink>
+  <AnchorLink>2-4: </AnchorLink>
+  <AnchorLink>2-5: </AnchorLink>
+</AnchorLinks>
+
+***
+
+IBM Observability by Instana APM for z/OS (Instana for z/OS) provides transaction tracing information and resource monitoring metrics from z/OS subsystems to Instana, IBM’s APM/Observability solution.  Instana for z/OS can be implemented on z/OS purely as a feed to Instana for transaction tracing data of key z/OS subsystems, or may be combined with existing OMEGAMON z/OS system monitoring to provide additional resource monitoring and metrics for z/OS subsystems. 
+The objective of this set of lab exercises is to introduce the capabilities of IBM Instana for z/OS, and to demonstrate the ability of Instana for z/OS to highlight and identify z/OS transaction issues in an end to end manner.  
+The lab environment is running in a live z/OS environment and is passing information to a live Instana server. 
+
+
+## 2-1: Getting Started
+
+Begin by logging into the Soleil lab environment.  You should see a picture of a desktop system.  Click on the system to login.
+After logging in, launch the Chrome browser.   The browser will open with 3 tabs
+
+  ![](images/browsertab.png)
+
+  - The first tab is the lab guide.  
+  - The 2nd tab is the Instana user interface
+  - The 3rd tab is a file that contains the username and password that you will use to login to Instana
+
+Use the username and password from the 3rd tab to login to the Instana user interface.
+You should now be looking at the home panel for Instana.  The focus of these lab exercises will be on the monitoring information in the ‘Applications’ portion of the display.
+
+  ![](images/Instana.png)
+
+Note the middle portion of the home panel lists applications currently being monitored by Instana, including applications with z/OS components.
+
+  ![](images/Instana-apps.png)
+
+
+To see all the Applications being observed   Click on ‘All Applications’ 
+
+  ![](images/Instana-allapps.png)
+
+You should now be looking at the Applications panel that shows application performance and availability across the various applications in the lab environment. This panel shows a summary by application name, with number of calls and call latency.  Note that you may sort this display.
+Click twice to the right of Name to sort the display in descending order
+
+  ![](images/Instana-zapps.png)
+
+You should now be looking at the Applications display sorted in descending order by Application Name.
+The application of interest for this lab section is zHybridApp.
+Click on zHybridApp to drill down for more detail on the sample z/OS application.
+
+  ![](images/Instana-zhybridapp.png)
+
+You should now be looking at an overview display for the zHybridApp application.  This display provides a wealth of information about the zHybridApp application, including call counts, processing time, call counts by status and call latency.   
+
+Note that you may look at information about zHybridApp for various time frames.  For purposes of this exercise it is recommended you look at information for the Last Hour.
+
+Click in the upper right area of the display and select ‘Last Hour’ if it has not already been specified
+
+  ![](images/Instana-lasthour.png)
+
+Note that in the bottom center portion of the display you will see the ‘Top Services’ portion of the display.  In z/OS context the Top Services will include key mainframe resources, such as CICS regions, Db2 on z/OS databases and z/OS Connect regions.
+
+  ![](images/Instana-shybriddetail.png)
+
+Click on ‘View All Services’  under Top Services
+
+  ![](images/Instana-topservices.png)
+
+You should now be looking at a display that shows the various Services, as identified by Instana, that make up the zHybridApp sample application. 
+
+  ![](images/Instana-zhybridtopservices.png)
+
+In the Services display you will see information on the various resources that make up the zHybridApp.  Some of these Services will be off the mainframe, such as zapm2-nginx and SimpleProxy.  In addition, you will see various z/OS specific Services, such as CICS, Db2 and z/OS Connect. 
+CICS is one of the transaction managers used commonly on z/OS.  In the zHybrid application you see three CICS regions, CICSTIVA, CICSTIVB and CICSAOR1.  Db2 is part of the zHybridApp and the display above you see a Db2 subsystem called DSNA.  You will also see a reference to z/OS Connect region, zceebill. z/OS Connect is an API enablement capability for z/OS.  In the above example z/OS Connect functions as an API enablement interface to CICS region CICSAOR1.
+In the Services display you will see a list of the relevant services for zHybridApp, the type of Service (CICS, database, z/OS Connect and more), the call counts for each of the services, and latency information for each Service.
+
+
+***
+
+## 2-2: Analyzing zHybridApp
+
+From the Services display you may drill down to see more information on how these Services are being utilized within zHybridApp. 
+Click on CICS Region CICSTIVA    
+
+  ![](images/Instana-cics.png)
+
+You should now be looking at the summary display for CICS CICSTIVA.  This display will show call counts, rates, processing time and latency.  Under the Top Endpoints you will see the transaction being executed within CICSTVA called CPIH.
+
+  ![](images/Instana-cicsdetail.png) 
+
+The zHybridApp originates on the HTTP tier.  The SimpleProxy Tomcat application issues Web Services calls to CICS region CICSTIVA.  CICSTIVA invokes transaction CPIH in the CICSTIVA region running on z/OS. CPIH initiates the business transaction LGICUS01 which accesses VSAM files, performs a CICS MRO connection to CICS region CICSTIVB to access another VSAM file.  LGICUS01 also makes calls to Db2 subsystem DSNA.
+From here you may drill down to see call detail and get a better understanding of the flow of the application.
+Click on ‘Analyze Calls’ in the upper left area of the display
+
+  ![](images/Instana-analyzecalls.png) 
+
+You should now be looking at a display that shows call counts, erroneous call counts and call latency.  Towards the bototm of the display you will calls by call group.  In this application component you see one transaction, CPIH (a standard CICS Pipeline Handler transaction).
+
+  ![](images/Instana-calldetails.png) 
+
+From here you may drill down to see call detail.
+Click on cics/CPIH   to see a list of individual requests.
+
+  ![](images/Instana-requests.png)
+
+You now see the display expand to show individual transactions listed towards the bottom of the display.  This display will show the transaction code, the Service name and the latency time for the transactions on the right.
+
+  ![](images/Instana-requestdetails.png)
+
+Click on cics/CPIH   to see detail for an individual request
+
+  ![](images/Instana-Indivrequest.png)
+
+You should now be looking at the detail for a selected transaction.
+
+  ![](images/Instana-transaction.png)
+
+Scroll the display to see the call information summarized towards the bottom.  This portion of the display will show the sequence of calls that make up the chosen application flow.
+
+  ![](images/Instana-callsequence.png)
+
+In the Calls display you can see that the call originated in a Service called zapm2-nginx, then went through a proxy service called SimpleProxy.  The call next went to the mainframe (esysmvs1.ztec.dmz), and then ultimately was sent to CICS region CICSTIVA.  You can see the relative latency times for each step on the way.
+
+  ![](images/Instana-callsequencedetail.png)
+
+Note that on the right portion of the display you see information about the CICS transaction.  This includes the call type, and the CICS Task Number.  The Task Number is an important item of information to identify the specific CICS task that executed the transaction.
+
+  ![](images/Instana-callsequencemarker.png)
+
+Note that underneath the cics/CPIH call you see other call information, including a call to read a VSAM file, a call to a Db2 database (DSNA), and a CSMI transaction call to another CICS Region (CICSTIVB).
+You may click on other items in the call sequence for more information
+Click on VSAM File
+
+  ![](images/Instana-callsequenceconc.png)
+
+You will see that this portion of the transaction flow is a call to a VSAM file allocated to the CICS Region.
+Click on CSMI
+You should now see detailed information about the call being executed in the second CICS Region, CICSTIVB. Note you see the CICS Region name and the CICS Task Number.
+
+  ![](images/Instana-cicstask.png)
+
+Feel free to explore other items in the transaction call sequence.
+There is another portion of the zHybridApp you may examine in more detail.  This application flow is a z/OS Connect Enterprise Edition (ZCEE) application.  The application originates again in the HTTP tier, issues REST API calls to a ZCEE instance running on z/OS called ZCEEBILL, ZCEE invokes a CICS transaction in CICS region CICSAOR1, and CICSAOR1 reads a VSAM file as part of the CICS transaction execution.
+Click on the Applications icon on the left of the display
+Click on the Name header and sort descending
+Click on zHybridApp
+
+
+  ![](images/Instana-cicsapp2.png)
+
+You should again be looking at the Summary display for zHybridApp you were looking at earlier.
+Click on the Services tab
+You should again be looking at the Services display for zHybridApp you were looking at earlier.
+Click on zceebill   this is the z/OS Connect instance running on the mainframe
+You are now looking at the Summary view for the z/OS Connect Service.  This shows call counts, latency information and the Top Endpoints referenced by the Service.
+
+
+   ![](images/Instana-zosconnect.png)
+
+Click on Analyze Calls
+
+  ![](images/Instana-zossconnectcalls.png)
+
+You should now be looking at the call overview for the z/OS Connect Service.
+
+   ![](images/Instana-zossconnectcalloverview.png)
+
+This display shows call counts, erroneous calls (if any), call latency and Endpoint Names referenced by the application.  In this example z/OS Connect is invoking an endpoint called catalog.
+Click on catalog under Endpoint Name
+
+   ![](images/Instana-inquire.png)
+
+You will see the display expand to show individual transaction executions and the latency time for each transaction on the right of the display.
+Click on GET/inquireSingle
+
+   ![](images/Instana-inquirydetail.png)
+
+Scroll the display as you did earlier to see the Call detail
+You should now see the detail for the z/OS Connect call.  This includes request path, API Name and Request ID, as shown on the right.  This also will show the call sequence in the middle.
+
+   ![](images/Instana-inquirecallstack.png)
+
+Click on CSMI
+
+   ![](images/Instana-csmi.png)
+
+You should now be able to see the CICS task detail for the underlying CICS transaction invoked by z/OS Connect.
+
+   ![](images/Instana-csmidetail.png)
+
+
+
+### 2-3: Create an Application Perspective
+**Application Perspectives** allow you to group together a number of different services and endpoints into dashboard that shows the health and performance of a business application.
+In this section, you will create and **Application Persective** for the **Quote of the Day** application that you setup earlier.
+
+
+On the left hand navigation, select **"Applications"**. You will see a screen open up that contains a list of all applications that are defined in the environment.  Initially, this
+this will be small until the students in the class define their applications.  
+  ![](images/addApplication.png)
+
+The next thing you are going to do is define an application.  You will see an **"Add"** button in the bottom right corner. 
+  ![](images/add.png)
+
+Click on the **"Add"** button
+
+A dialog will open with two options.  We'll examine the "Global Smart Alerts" in the Administrative section of this lab.  For now, click on the **"New Application Perspective"** button
+  ![](images/newApplication.png)
+
+When the dialog opens, click the **"Next"** button
+  ![](images/next.png)
+
+On the next screen, click the radio button for **"All downstream services"**.  This will ensure that all of the downstream calls for the application will be monitored in this 
+Application Perspective.
+
+Next, click the **"Add filter"** button.
+
+You will see list of filter options.  Select the option labeled **"Zone"**.
+  ![](images/zoneFilter.png)
+
+
+Then, click on the **"value"** field that is next to the **"Zone"**.  You should see a list of Zones including your student name.  Select your student name or type the name 
+in the entry box.
+  ![](images/zoneStudent6.png)
+
+
+Now, click the **"Add filter"** button and select **"AND"**
+  ![](images/and.png)
+
+
+Select **"Add filter"** again.  Then, in the search field type the word **"endpoint"**.  After typing the word **"endpoint"**, you will see an entry "Endpoint Name".  
+
+Select **"Endpoint Name"**
+  ![](images/endpointFilter.png)
+
+
+A dropdown list will appear.  If it doesn't, click on the **"Value"** field.  In the dropdown list, find and then select the entry for **"GET /health"**.
+  ![](images/getHealth.png)
+
+
+Finally, select the **"="** symbol and select **"!= (does not equal)"** from the drop down list.
+  ![](images/endpointFilter.png)
+
+
+This last filter is going to filter out the **"GET /health"** requests which are just kubernetes health checks and are unrelated to the application transactions.
+
+You screen should now look like this:
+  ![](images/appDefinition.png)
+
+
+Click **"Next"** to go to the next screen.
+  ![](images/next.png)
+
+
+On the next page, give the name of your Application Perspect your student name.  For example, **"student6"**.  Then, click the **"All Calls"** radio button to monitor all calls.  Then, click the **"Create"** button to create your Application Perspective.
+  ![](images/createApp.png)
+
+You have now created an Application Perspective. In the next section, you'll explore the application.
+
+
+### 2-4: Explore the Application
+
+After creating the application, your screen should have automatically changed context to show the **studentXXX** Application Perspective that you just defined.
+
+Initially, you probably won't see any metrics on the screen.  In the upper right corner, click the **"Live"** button and within a short amount of time you should start
+to see metrics in the widgets.
+  ![](images/yourApplication.png)
+
+On this page you can see the transaction volumes, the number of erroneous calls, latency, and the top services that make up the application.
+
+You'll notice a number of tabs across the top of the screen.  Explore these tabs.  In particular, let's take a look at the **"Depedencies"** tab.
+
+On the dependencies tab, you'll see a full topology of the application services.  This topology is discovered automatically.  You can see transactions flowing between
+the different nodes in the topology.   Most of these services are node.js based cloud-native services. The **"acemq.tivlab.raleigh.ibm.com-BK1:EG2"** is the ACE 
+integration node named BK1 and Integration Server named EG2.   The QM1 node in the topology is the MQ Queue Manager named **"MQ1"**.
+
+Click on the **"QM1"** node.  Notice that there are 3 options that would allow you to navigate to the MQ dashboard, the transaction Flow within MQ, or analyze the transaction
+calls through MQ.
+
+Click on **"Upstream/Downsteam"** near the top of the page.  This will allow you to see a list of Upstream and Downstream services for the application.
+  ![](images/upstreamDownstream.png)
+
+
+Click on **"Stack"** where you can view the Application, Kubernetes, and Infrastructure stack that makes up the application.
+  ![](images/stack.png)
+
+
+All of this contextual and relationship data helps you analyze and debug you applications to get to root cause as quickly as possible.  In addition, our built 
+analytics uses this data to automatically group multiple related Events into a single Incident for diagnosis.
+
+Close the **Stack** dialog by either clicking on the **Stack** button or somewhere else on the background of the Instana GUI.
+
+Click on the Services Tab
+  ![](images/services.png)
+
+
+You will see a list of services that make up the application.
+
+Scroll down on the page until you see the **"qotd-engraving"** service.
+
+Click on the **qotd-engraving** link on the left Column.  The qotd-engraving service is the services that calls and ACE flow and then puts a message on the MQ queue. 
+We want to explore this service in more detail.
+  ![](images/qotdEngraving.png)
+
+
+
+Next, click on the **"Analyze Calls"** button to analyze the individual transactions that are executing in the system.
+  ![](images/analyzeCalls.png)
+
+This will take you to a screen showing all of the different types of calls taking place within the qotd-engraving service.  At the top, there is a summary of all calls in terms of
+transaction rates, return codes, erroneous calls, and latency.
+
+On the right side, click the arrow to expand the list of qotd-engraving **"POST /order"** calls.  Instana is capturing 100% of the transactions so that you don't miss intermittent problems that might be occurring in the environment.  
+  ![](images/engravingCalls.png)
+
+
+Select one of the requests
+
+You are now looking at the tracing data for a single transaction.  At the top of the screen, you will see a summary of the latency, sub-calls and timeline. On the right
+side of the screen, you'll see the details and stack trace.
+  ![](images/call1.png)
+
+
+Scroll down and you will see the service endpoint list
+  ![](images/call2.png)
+
+
+Finally, scroll to the bottom of the screen and you will see a detailed call stack.  The call stack gives you the timing and sequence of the call going through the application.
+  ![](images/call3.png)
+
+
+If you select the text on the left or the timeline bar, the **"Details & Stack Trace"** context will change.
+
+Explore the different types of calls going through this transaction by selecting the individual call.  When you select an entry, examine the detailed information on the right.
+  ![](images/callStack.png)
+
+
+You should notice that different request types are color coded differently.  Blue represents the HTTP requests going through an App Server or java process. Orange represents
+a database call.  And green represents a messaging call (ACE and MQ).  
+
+When you select the Node.js App Server requests, you'll see the **StackTrace** on the right hand side. Within the **StackTrace**, click one of the URLs.
+  ![](images/stackTrace.png)
+
+
+When you click on the link, Instana will decompile the code and show you the lines of code.  The exact line of code that is executing will be highlighted in yellow.
+  ![](images/lineOfCode.png)
+
+
+When you select the ACE portions of the call Stack (gen.supplychain, msgFlowTransaction, and postOrder) you will see key information including the flow name, Integration Node,
+Integration Server, IP address, and more.
+
+  ![](images/ace.png)
+
+
+When you select the MQ portion of the call stack, you'll see key information related to the MQ environment on the right.  The information includes the Queue Manager, Queue Name,
+and the message ID that was posted on the queue.
+  ![](images/mq.png)
+
+
+Scroll down to the very bottom where you see a link named **"CP4I.DEMO.API.Q"**. 
+
+Click on the **"CP4I.DEMO.API.Q"** link and you will navigate to the Queue page of the MQ sensor for the CP4I.DEMO.API.Q queue.
+
+Earlier, you explored the Queue Manager and the MQ Channels.  You're now looking at the queue that is being used by this application.  You'll notice key information
+like the oldest message on the queue, queue depth, input/output rates, and more.
+  ![](images/queue1.png)
+
+
+That completes this section of the lab.
+
+***
+
+## 2-5: Summary
+
+In this exercise you have explored some of the key capabilities within Instana.  You explored kubernetes monitoring.  You defined an Application Perspective. And you
+explored the application monitoring details.
+
+
+To continue other portions of the lab, select one of the lab exercises in the upper left corner or select one of the images below.
+
+
+<Row>
+
+<Column colLg={4} colMd={4} noGutterMdLeft>
+<ArticleCard
+    color="dark"
+    subTitle="Installing and Configuring Monitoring"
+    title="Install the Instana Monitoring Agent and Configure the Sensors"
+    href="/tutorials/Install"
+    actionIcon="arrowRight"
+    >
+
+![](images/dynamicGraph.png)
+
+</ArticleCard>
+
+</Column>
+
+<Column colLg={4} colMd={4} noGutterMdLeft>
+<ArticleCard
+    color="dark"
+    subTitle="Diagnose a Problem"
+    title="Learn How Instana Can Help you Quickly Diagnose a Complex Problem"
+    href="/tutorials/Diagnose"
+    actionIcon="arrowRight"
+    >
+
+![](images/instanaEvents.png)
+
+</ArticleCard>
+</Column>
+
+<Column colLg={4} colMd={4} noGutterMdLeft>
+<ArticleCard
+    color="dark"
+    subTitle="Administer Instana"
+    title="Learn How to Perform Administrative Tasks in Instana"
+    href="/tutorials/Administration"
+    actionIcon="arrowRight"
+    >
+
+![](images/infrastructure2.png)
+
+</ArticleCard>
+</Column>
+</Row>

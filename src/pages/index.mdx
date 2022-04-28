@@ -1,16 +1,16 @@
 --- 
-title: Think Lab 1201 - Using Instana to  achieve AI-enhanced enterprise observability—including the mainframe
-description: Observability of a hybrid application using Instana and Humio
+title: Think Lab 1201 - Using Instana to  achieve observability including the mainframe
+description: Observability of a hybrid application using Instana including mainframe
 ---
 
 ## Introduction
 
-This lab will allow students to learn how to intrument a hybrid application for observability using Instana. We will be albe to integrate log file data
-using the Humio integration. The application we look at consist of a cloud native component running in kubernetes (OpenShift) and a traditional server with IBM MQ and IBM App Connect Enterprise. Additionally we will look at some SystemZ components.
+This lab will introduce Instana and then illustrate how it can be used for an application which makes use of some mainframe components.
 
-We have already instrumented the application for you and through the various lab exercises you will explore the capabillities of the combination of Instana and Humio.
+We have already instrumented the application for you and through the various lab exercises you will explore the capabillities of the combination of Instana.
 
-1) In the first portion of the lab, students will look at the Humio integration for a Hybrid application
+1) In the first portion of the lab, students will get a good idea of the standard capabillities of Instana. If you are already familiar
+with the Instana Observabillity solution you could skip to the second part which looks into the specific SystemZ capabillities.
 
 2) The second part of the lab looks at how these same techniques can be applied on SystemZ components.
 
@@ -39,33 +39,18 @@ the lab guide within the virtual machine so that you can easily copy and past te
 
 ## Begin the Exercises
 
-You are now ready to start performing the lab exercises.  You must complete the Installation section first.  After that, the sections can be done in any order.  For a new user of Instana, we recommend 
-performing the **Explore Instana** section of the lab next.  If you are already familiar with Instana, you can select any other section of the lab.
+You are now ready to start performing the lab exercises.  After that, the sections can be done in any order.  For a new user of Instana, we recommend 
+performing the **Explore Instana** section of the lab next.  If you are already familiar with Instana, you can select immediately the systemZ lab.
 
 Select one of the lab exercises in the upper left corner or select one of the images below.
 
 
 <Row>
 
-<Column colLg={4} colMd={4} noGutterMdLeft>
+<Column colLg={2} colMd={4} noGutterMdLeft>
 <ArticleCard
     color="dark"
-    subTitle="Installing and Configuring Monitoring"
-    title="Install the Instana Monitoring Agent and Configure the Sensors"
-    href="/tutorials/Install"
-    actionIcon="arrowRight"
-    >
-
-![](../images/dynamicGraph.png)
-
-</ArticleCard>
-
-</Column>
-
-<Column colLg={4} colMd={4} noGutterMdLeft>
-<ArticleCard
-    color="dark"
-    subTitle="Explorer Instana"
+    subTitle="Explore Instana"
     title="Explore the Instana UI and Capabilities"
     href="/tutorials/Explore"
     actionIcon="arrowRight"
@@ -79,27 +64,13 @@ Select one of the lab exercises in the upper left corner or select one of the im
 <Column colLg={4} colMd={4} noGutterMdLeft>
 <ArticleCard
     color="dark"
-    subTitle="Diagnose a Problem"
-    title="Learn How Instana Can Help you Quickly Diagnose a Complex Problem"
-    href="/tutorials/Diagnose"
+    subTitle="Instana and the mainframe"
+    title="Learn How Instana Can Help you with hybrid applications that include Mainframe components"
+    href="/tutorials/Instana on Z"
     actionIcon="arrowRight"
     >
 
 ![](../images/instanaEvents.png)
-
-</ArticleCard>
-</Column>
-
-<Column colLg={4} colMd={4} noGutterMdLeft>
-<ArticleCard
-    color="dark"
-    subTitle="Administer Instana"
-    title="Learn How to Perform Administrative Tasks in Instana"
-    href="/tutorials/Administration"
-    actionIcon="arrowRight"
-    >
-
-![](../images/infrastructure.png)
 
 </ArticleCard>
 </Column>

@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Theme Carbon',
-    description: 'A Gatsby theme for the carbon design system',
-    keywords: 'gatsby,theme,carbon',
+    title: 'Instana',
+    description: 'A Gatsby theme for the carboThink Lab 1201 - Using Instana to achieve AI-enhanced enterprise observability—including the mainframen design system',
+    keywords: 'Think2022',
   },
   pathPrefix: `/instana-humio-hybrid-systemZ`,
   plugins: [

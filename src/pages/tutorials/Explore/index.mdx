@@ -1,381 +1,220 @@
 ---
-title: Section 2 - Explore Instana and the Quote of the Day Application
+title: Section 1 - Explore Instana and the Quote of the Day Application
 description:
 ---
 
-
 <AnchorLinks>
-  <AnchorLink>2-1: Explore kubernetes</AnchorLink>
-  <AnchorLink>2-1: Explore the Infrasture View</AnchorLink>
-  <AnchorLink>2-3: Create an Application Perspective</AnchorLink>
-  <AnchorLink>2-4: Exploring the Application</AnchorLink>
-  <AnchorLink>2-5: Summary</AnchorLink>
+  <AnchorLink>1-1: Explore the Infrasture View</AnchorLink>
+  <AnchorLink>1-2: Exploring Context Information</AnchorLink>
+  <AnchorLink>1-3: Exploring the Application</AnchorLink>
+  <AnchorLink>1-4: Working with Events and Incidents</AnchorLink>
+  <AnchorLink>1-5: Summary</AnchorLink>
 </AnchorLinks>
 
-***
+---
 
 In this portion of the lab, you will explore some key Instana capabilities including monitoring of kubernetes, monitoring of applications, and monitoring of infrastructure.
 
-## 2-1: Explore Kubernetes
+## 1-1: Explore the Infrastructure View
 
-Open the browser tab for the Instana user interface.
+Begin by logging into the Soleil lab environment. You should see a picture of a desktop system. Click on the system to login.
+After logging in, launch the Chrome browser. The browser will open with 3 tabs
 
-On the left navigation, select "kubernetes"
-  ![](images/kubernetes.png)
+![](images/browsertab.png)
 
-You will see a list of kubernetes clusters.   Look for the Cluster with your student name.  If you don't see your student name, you may need to wait a couple of minutes.
-  ![](images/clusters.png)
+- The first tab is the lab guide.
+- The 2nd tab is the Instana user interface
+- The 3rd tab is a file that contains the username and password that you will use to login to Instana
 
-If you don't see your student name after a couple of minutes, we need to troubleshoot the Instana Agent.  From a terminal window, issue the following command:
-```sh
-oc get pods -n instana-agent
-```
+Use the username and password from the 3rd tab to login to the Instana user interface.
+You should now be looking at the home panel for Instana. The focus of these lab exercises will be on the monitoring information in the ‘Applications’ portion of the display.
 
-Check to make sure that all pods are running.
+![](images/Instana.png)
 
-If all pods are running, we need examine the logs of one of the pods.
+Note the middle portion of the home panel lists applications currently being monitored by Instana.
 
-Type:  
-```sh
-oc logs POD_NAME -c instana-agent
-```
-where **POD_NAME** is one of the pods listed in the previous command.
+![](images/Instana-apps.png)
 
-Assuming that your cluster name shows up properly, click on the link for your student name.
+In this environment a number of Instana agents have already been setup for you. So you will immediately be able to start exploring.
+The first place we will look at is the Infrstructure View. Here you will discover a map of all the infrastructure that was discovered by the installed agents. Navigate to this view by **Clicking on the Infrastructure Item** in the left side menu.
 
-You should see a screen similar to the one below where you can see overall utilization of the kubernetes cluster.
-  ![](images/cluster.png)
+![](images/select-infra.png)
 
-Select some of the other tabs to explore the kubernetes monitoring.  We recommend you look at the Events, Nodes, and Pods tabs.  When you select the pods tab, you will see a list of all pods running within the cluster.
+You should now see a map as in the image below, showing the discovered infrastructure. Notice that it is organized in zones which is a mechanism to group the data from a number of agents together.
 
-In the upper right corner, add your student name into the search widget.  You'll notice that it will filter the list to the pods related to the Quote of the Day application.
-  ![](images/pods.png)
+![](images/infrastructure-map.png)
 
+You can filter this map by entering queries in the top bar. For example **enter "Raleigh"** in the search bar to filter out one zone.
+You get a view containing only the infrastructure which sits in the defined Raleigh Datacenter zone.
 
-***
+![](images/Raleigh-zone.png)
 
-## 2-2: Explore the Infrastructure View
+**Click on the Linux server host** in the picture, be sure to click on the outer containing box, not on one of the discovered servicses. You now see some details of the server.
 
-Next, explore the Infrastructure view.  To do this, click on the "Infrastructure" icon on the left side.
-  ![](images/yourZone1.png)
+![](images/Raleigh-server.png)
 
-Look for your student name.  You'll notice that there is a square surrounding two "towers" with your student name.  The square is a "zone".  If you recall, you 
-specified a zone name when you performed the yaml based install of the Instana Agent.  The towers contained within the square represents the OpenShift worker node and the 
-virtual machine running ACE and MQ. 
+To get more information on the server **click on the Open Dashboard** button. This gives you a dashboard with the various aspects which the agent discovered about this server
 
-If this was a more typically kubernetes environment, you would see more cubes, one for each worker node.  Notice the k8s-bstern2 zone.  This is a cluster with three worker nodes.
+![](images/Raleigh-server-detail.png)
 
-If you are unable to find your zone due to the large number of students, you can type your student name in the filter bar at the top
-  ![](images/student6Zone.png) 
+With the time selector on the right you can select which time frame of data to look at or use the option to see live data. When **clicking on Live** you start to see metrics in real time being refreshed at 1 sec resolution
 
-Or, you can use the lucene query language in the search bar.
-- Flyover the filter bar and select **"Entity"**
-- A list will popup. Find and select **"Host"**
-- Once you have select "Host", another list will popup. Select "name"
-- Now, you will see **"entity.host.name:"**.  After the ":", you can do a wildcard search.  For example **"entity.host.name:student*"**.
+![](images/time-selector.png)
 
-Once you have found your zone, flyover the tower that represents your worker node.  The taller tower is the worker node.  It is taller because there are more discovered entities 
-running on that server.
-  ![](images/student6Flyover.png) 
+With the drop down you can select historical data to see how things have evolved over time.
 
-You'll notice that a number of components were automatically discovered and are instrumented for monitoring.
+![](images/history-selector.png)
 
-Next, flyover the other tower.  
-  ![](images/student6Flyover2.png) 
+You can now also drill down in the services which were discoverd by the agent on this machine. **Click on one of the ACE Integration servers** which you see in the interfaces list on the machine overview.
 
-This is the ACE and MQ server. You can see the MQ and ACE components along with a discovered JVM, a python app, and more.
+![](images/ace-interface-select.png)
 
-In the bottom right corner there are several icons that allow you to organize the Infrastructure view in different ways.  For example, group the servers by OS architecture.
-  ![](images/organize.png)
+You now get some details on this service running on the machine. You see for example that it is a JVM, you can analyze the memory consumption and if you scroll down the message flows it is running.
 
-We recommend you explore those at the end of the lab if time permits.
+![](images/ace-details.png)
 
-Next, click on the "Comparison Table" near the top of the page.
-  ![](images/comparisonTab.png)
+---
 
-This table shows a sortable and searchable list of the Hosts that make up this environment.  You can quickly find hosts consuming high CPU, high memory, or have poor health.
+## 1-2: Exploring Context Information
 
-In addition, if you select where is says **"Hosts"**, there is a dropdown list that allows you to see lists of JVMs, containers, etc.
-  ![](images/tableContent.png)
+The previous steps showed you a fairly traditional approach in monitoring. You look at metrics starting from the infrastructure level. This can still be handy, but in todays complex world there is a number of more interesting ways of looking at metrics. Instana offers you for example to look at the data in various context beyond the infrastructure. For example in which application(s) is this service used and how does it impact them.
+**click on the Infrastructure icon** in the left menu bar.
 
-Change from **"Hosts"** to **"Docker Containers"** in the dropdown list and you'll see a complete list of containers and their utilization and health.
+You now return back to the full Infrastructure map view.
 
-Switch back to the Map view by clicking on "Map" near the upper left corner.
-  ![](images/map.png)
+![](images/infrastructure-menu.png)
 
-Zoom in with the plus sign in the bottom right corner.
-  ![](images/plus.png)
+**Type k8s-bstern2** into the search bar
 
-You'll notice that each tower is actually comprised of multiple pizza boxes.   Each one represents an "Entity" such as an MQ Queue Manager or an ACE Integration Node.
-  ![](images/pizzaBox.png)
+![](images/k8s-bstern2.png)
 
-Flyover the ACE/MQ server again until you see a list of all discovered Entities.  If you only see 1 entity, move your mouse to one of the corners of the tower.
-Once you see all of the entities, click your mouse.  You'll see a dialog open 
-  ![](images/towerWithEntities.png)
+**Click on the k8s-bstern2 zone** which contains a kubernetes cluster.
 
-Use the scroll bar to scroll down. You'll notice that you see each of the types of Entities that were discovered.  Expand the MQ entity type and you'll see the Queue
-Manager that was discovered.
-  ![](images/dashboardScroll.png)
+    ![](images/k8s-bstern2-zone.png)
 
-It is possible to click on either the "Open Dashboard" button or the links for the individual entities.  If you clicked, you could navigate to either the Host 
-operating system metrics or the specific middleware entity.
+**Click on Open Dashboard**
+![](images/k8s-bstern2-dashboard.png)
 
-Click on the "Open Dashboard" button and we'll examine the Host Agent dashboard.  After you click on the botton you'll see a screen that looks like this:
-  ![](images/host.png)
+You see now an overview of this cluster and the various nodes it contains.
 
-You can see fine grained metric data for the Host operating system. Scroll down and explore the other metrics.
+    ![](images/zone-context.png)
 
-As you scroll down the page, you'll notice a section on the left side of the screen that contains a list of Entity types that were discovered. This is the same list that you 
-saw earlier on the Infrastructure view.
-  ![](images/drillMQ.png)
+This is due to the fact that this zone is setup to filter the nodes belonging to this Kubernetes cluster. You can now also drill down in this Kubernetes context, by **clicking on the Stack drop down**. The Kubernetes context shows you information which is relevant from a viewpoint of the operator managing this cluster. He can now see which PODs are running onto it.
 
-Expand the IBM MQ Queue Manager section and select the link for the **QM1@acemq.tivlab.raleigh.ibm.com** queue manager
+    ![](images/kub-context.png)
 
-You will navigate to the dashboard for the MQ Queue Manager. Scroll down the page and examine the metrics.  There are many tables that contain links that would allow you to
-drill into the listener, topics, queues, channels, and more.  Let's focus on the Channels.  Scroll down to the table labeled "Channels".  You will notice two channels with the
-same name. One represents loopback and the other represents the server IP Address.   Select the link next to the one with connection name 10.0.0.3.
-  ![](images/drillChannel.png)
+From here you can also switch to the Infrastructure context where you could see information on the containers that are running.
+Even more interesting from a today viewpoint is that you can select one of the worker nodes and move up to the application context level.
+**Click on the first worker node**
 
-Examine the Channel metrics on the page.
+    ![](images/select-worker.png)
 
-Next, look at the top of the screen.  You'll notice that this is a breadcrumb that allows you to navigate back to where you were earlier in your nativations.   It is also
-possible to use the back button in your browser.
-  ![](images/breadcrumb.png)
+Now back from the stack drop down, **click on application view** This shows you which applications are running in this context.
 
-If time permits at the end of the lab, you can explore some of the other elements within the MQ sensor or other middleware such as ACE.
+    ![](images/application-context.png)
 
+---
 
-### 2-3: Create an Application Perspective
+## 1-3: Exploring the application:
+
+In a modern digital business world you will typically want to start out from the application viewpoint.
 **Application Perspectives** allow you to group together a number of different services and endpoints into dashboard that shows the health and performance of a business application.
-In this section, you will create and **Application Persective** for the **Quote of the Day** application that you setup earlier.
+In this section, we use the **Application Persective** for the **Quote of the Day** application that was defined in this setup.
 
+On the left hand navigation, select **"Applications"**. You will see a screen open up that contains a list of all applications that are defined in the environment.
 
-On the left hand navigation, select **"Applications"**. You will see a screen open up that contains a list of all applications that are defined in the environment.  Initially, this
-this will be small until the students in the class define their applications.  
-  ![](images/addApplication.png)
+![](images/application-perspective.png)
 
-The next thing you are going to do is define an application.  You will see an **"Add"** button in the bottom right corner. 
-  ![](images/add.png)
+**Select the Quote of the Day application**
 
-Click on the **"Add"** button
+![](images/qotd-select.png)
 
-A dialog will open with two options.  We'll examine the "Global Smart Alerts" in the Administrative section of this lab.  For now, click on the **"New Application Perspective"** button
-  ![](images/newApplication.png)
+This opens up the dashboard for the application.
 
-When the dialog opens, click the **"Next"** button
-  ![](images/next.png)
+![](images/qotd-dashboard.png)
 
-On the next screen, click the radio button for **"All downstream services"**.  This will ensure that all of the downstream calls for the application will be monitored in this 
-Application Perspective.
+This view will give you immediately a good view of what the state of this application is. You see golden signals like load on the application, latency, calls resulting in an error and the general resource consumption. This allows for a very quick decision if the application is doing OK or if there are some potential issues. We will see that using Instana we can also get a better idea of the topology of this application and what are the dependencies between the various components.
 
-Next, click the **"Add filter"** button.
+At this moment you have no clue what this application is about. **Click on the dependencies tab** to get some insight in what is going on in this applicaiton.
 
-You will see list of filter options.  Select the option labeled **"Zone"**.
-  ![](images/zoneFilter.png)
+![](images/qotd-dependencies.png)
 
+These topologies are build in a dynamic way based on detection of calls flowing between components. This allows Instana to cope with the high volatility in todays workloads, where the static definition of a topology no longer keeps up.
+With this dependency map you can get a good insight in the application components and there relation, even if you were never involved in the internals of this application. In this case we see web frontend service depending on a bunch of other services. If you want to see more detail
+about a particular service, you can just hover over it.
+For example **hover over the qotd-author** service.
 
-Then, click on the **"value"** field that is next to the **"Zone"**.  You should see a list of Zones including your student name.  Select your student name or type the name 
-in the entry box.
-  ![](images/zoneStudent6.png)
+![](images/qotd-author.png)
 
+By **clicking on the service** you get access to more details. You can jump to the dashboard for this specific service, you can analyze the call stack details or you can get a look at the call flow.
+Select **call flow**
+![](images/select-flow.png)
 
-Now, click the **"Add filter"** button and select **"AND"**
-  ![](images/and.png)
+This shows a view where you clearly see which component calls what other component.
+![](images/call-flow.png)
 
+This view can be used to get some insight in the performance of each of the components. Developers can use this to figure out performance bottle necks.
+You can for example see a latency report and see the actual call flows. Do this by selecting Latency and clicking on the top icon which activated the call visualisation.
 
-Select **"Add filter"** again.  Then, in the search field type the word **"endpoint"**.  After typing the word **"endpoint"**, you will see an entry "Endpoint Name".  
+![](images/latency-analysis.png)
 
-Select **"Endpoint Name"**
-  ![](images/endpointFilter.png)
+In this case we see for example that the qotd-image service is responsible for the bulk of the latency on the qotd-author service.
 
+---
 
-A dropdown list will appear.  If it doesn't, click on the **"Value"** field.  In the dropdown list, find and then select the entry for **"GET /health"**.
-  ![](images/getHealth.png)
+## 1-4: Working with Events and Incidents
 
+Now move back to the Qute of the Day application Dashboard.
 
-Finally, select the **"="** symbol and select **"!= (does not equal)"** from the drop down list.
-  ![](images/endpointFilter.png)
+![](images/qoth-dashboard.png)
 
+What we could already have noticed in the previous steps is that there is a quite large number of erronuous calls being shown on this dashboard.
 
-This last filter is going to filter out the **"GET /health"** requests which are just kubernetes health checks and are unrelated to the application transactions.
+![](images/qotd-erronuous.png)
 
-You screen should now look like this:
-  ![](images/appDefinition.png)
+You can now get a better insight in what is going on by clicking on one of the red bars and then selecting View in Analyze.
 
+    ![](images/qotd-analyze.png)
 
-Click **"Next"** to go to the next screen.
-  ![](images/next.png)
+This shows a filtering of the various calls that cause errors in the context of the quote of the day application in the selected time frame.
 
+![](images/qotd-analysis.png)
 
-On the next page, give the name of your Application Perspect your student name.  For example, **"student6"**.  Then, click the **"All Calls"** radio button to monitor all calls.  Then, click the **"Create"** button to create your Application Perspective.
-  ![](images/createApp.png)
+The drill down allows me now to perform a root cause analysis. **Click on the QM1 service** You will notice that this shows some detail on the underlying behaviour.
 
-You have now created an Application Perspective. In the next section, you'll explore the application.
+![](images/qm1.png)
 
+Notice that this corresponds to some PUT calls towards an MQ instance. If you **click on the PUT call** you get a view of the detailed stack trace of this call
 
-### 2-4: Explore the Application
+    ![](images/put-call.png)
 
-After creating the application, your screen should have automatically changed context to show the **studentXXX** Application Perspective that you just defined.
+**Scroll down on this screen to see a full detailed stack trace**
 
-Initially, you probably won't see any metrics on the screen.  In the upper right corner, click the **"Live"** button and within a short amount of time you should start
-to see metrics in the widgets.
-  ![](images/yourApplication.png)
+    ![](images/stack-trace.png)
 
-On this page you can see the transaction volumes, the number of erroneous calls, latency, and the top services that make up the application.
+Selecting the bottom of the stack trace (erronuous put on the queue manager) you will see the actual error message.
 
-You'll notice a number of tabs across the top of the screen.  Explore these tabs.  In particular, let's take a look at the **"Depedencies"** tab.
+    ![](images/stack-trace-error.png)
 
-On the dependencies tab, you'll see a full topology of the application services.  This topology is discovered automatically.  You can see transactions flowing between
-the different nodes in the topology.   Most of these services are node.js based cloud-native services. The **"acemq.tivlab.raleigh.ibm.com-BK1:EG2"** is the ACE 
-integration node named BK1 and Integration Server named EG2.   The QM1 node in the topology is the MQ Queue Manager named **"MQ1"**.
+Looking at the detail of the message we note that there is an actual MQ error message which indicates that this queue is full.
 
-Click on the **"QM1"** node.  Notice that there are 3 options that would allow you to navigate to the MQ dashboard, the transaction Flow within MQ, or analyze the transaction
-calls through MQ.
+![](images/error-detail.png)
 
-Click on **"Upstream/Downsteam"** near the top of the page.  This will allow you to see a list of Upstream and Downstream services for the application.
-  ![](images/upstreamDownstream.png)
+In this way we quite drilled down to the root cause of this problem, which is nice, but Instana will help you even more. If we take a good look at the menu bar on the left of the screen we notice a red indicator on the events icon.
 
+    ![](images/event-indicator.png)
 
-Click on **"Stack"** where you can view the Application, Kubernetes, and Infrastructure stack that makes up the application.
-  ![](images/stack.png)
+Click on the Events which opens the Event dashboard page
 
+![](images/event-dashboard.png)
 
-All of this contextual and relationship data helps you analyze and debug you applications to get to root cause as quickly as possible.  In addition, our built 
-analytics uses this data to automatically group multiple related Events into a single Incident for diagnosis.
+You notice the MQ queue full event. If you click on that one you immediately see the details of the problem that is at the basis of our previously detected errounous call rate.
 
-Close the **Stack** dialog by either clicking on the **Stack** button or somewhere else on the background of the Instana GUI.
+![](images/mqfull-error.png)
 
-Click on the Services Tab
-  ![](images/services.png)
+## 1-5: Summary
 
-
-You will see a list of services that make up the application.
-
-Scroll down on the page until you see the **"qotd-engraving"** service.
-
-Click on the **qotd-engraving** link on the left Column.  The qotd-engraving service is the services that calls and ACE flow and then puts a message on the MQ queue. 
-We want to explore this service in more detail.
-  ![](images/qotdEngraving.png)
-
-
-
-Next, click on the **"Analyze Calls"** button to analyze the individual transactions that are executing in the system.
-  ![](images/analyzeCalls.png)
-
-This will take you to a screen showing all of the different types of calls taking place within the qotd-engraving service.  At the top, there is a summary of all calls in terms of
-transaction rates, return codes, erroneous calls, and latency.
-
-On the right side, click the arrow to expand the list of qotd-engraving **"POST /order"** calls.  Instana is capturing 100% of the transactions so that you don't miss intermittent problems that might be occurring in the environment.  
-  ![](images/engravingCalls.png)
-
-
-Select one of the requests
-
-You are now looking at the tracing data for a single transaction.  At the top of the screen, you will see a summary of the latency, sub-calls and timeline. On the right
-side of the screen, you'll see the details and stack trace.
-  ![](images/call1.png)
-
-
-Scroll down and you will see the service endpoint list
-  ![](images/call2.png)
-
-
-Finally, scroll to the bottom of the screen and you will see a detailed call stack.  The call stack gives you the timing and sequence of the call going through the application.
-  ![](images/call3.png)
-
-
-If you select the text on the left or the timeline bar, the **"Details & Stack Trace"** context will change.
-
-Explore the different types of calls going through this transaction by selecting the individual call.  When you select an entry, examine the detailed information on the right.
-  ![](images/callStack.png)
-
-
-You should notice that different request types are color coded differently.  Blue represents the HTTP requests going through an App Server or java process. Orange represents
-a database call.  And green represents a messaging call (ACE and MQ).  
-
-When you select the Node.js App Server requests, you'll see the **StackTrace** on the right hand side. Within the **StackTrace**, click one of the URLs.
-  ![](images/stackTrace.png)
-
-
-When you click on the link, Instana will decompile the code and show you the lines of code.  The exact line of code that is executing will be highlighted in yellow.
-  ![](images/lineOfCode.png)
-
-
-When you select the ACE portions of the call Stack (gen.supplychain, msgFlowTransaction, and postOrder) you will see key information including the flow name, Integration Node,
-Integration Server, IP address, and more.
-
-  ![](images/ace.png)
-
-
-When you select the MQ portion of the call stack, you'll see key information related to the MQ environment on the right.  The information includes the Queue Manager, Queue Name,
-and the message ID that was posted on the queue.
-  ![](images/mq.png)
-
-
-Scroll down to the very bottom where you see a link named **"CP4I.DEMO.API.Q"**. 
-
-Click on the **"CP4I.DEMO.API.Q"** link and you will navigate to the Queue page of the MQ sensor for the CP4I.DEMO.API.Q queue.
-
-Earlier, you explored the Queue Manager and the MQ Channels.  You're now looking at the queue that is being used by this application.  You'll notice key information
-like the oldest message on the queue, queue depth, input/output rates, and more.
-  ![](images/queue1.png)
-
-
-That completes this section of the lab.
-
-***
-
-## 2-5: Summary
-
-In this exercise you have explored some of the key capabilities within Instana.  You explored kubernetes monitoring.  You defined an Application Perspective. And you
+In this exercise you have explored some of the key capabilities within Instana. You explored kubernetes monitoring. You defined an Application Perspective. And you
 explored the application monitoring details.
 
-
-To continue other portions of the lab, select one of the lab exercises in the upper left corner or select one of the images below.
-
-
-<Row>
-
-<Column colLg={4} colMd={4} noGutterMdLeft>
-<ArticleCard
-    color="dark"
-    subTitle="Installing and Configuring Monitoring"
-    title="Install the Instana Monitoring Agent and Configure the Sensors"
-    href="/tutorials/Install"
-    actionIcon="arrowRight"
-    >
-
-![](images/dynamicGraph.png)
-
-</ArticleCard>
-
-</Column>
-
-<Column colLg={4} colMd={4} noGutterMdLeft>
-<ArticleCard
-    color="dark"
-    subTitle="Diagnose a Problem"
-    title="Learn How Instana Can Help you Quickly Diagnose a Complex Problem"
-    href="/tutorials/Diagnose"
-    actionIcon="arrowRight"
-    >
-
-![](images/instanaEvents.png)
-
-</ArticleCard>
-</Column>
-
-<Column colLg={4} colMd={4} noGutterMdLeft>
-<ArticleCard
-    color="dark"
-    subTitle="Administer Instana"
-    title="Learn How to Perform Administrative Tasks in Instana"
-    href="/tutorials/Administration"
-    actionIcon="arrowRight"
-    >
-
-![](images/infrastructure2.png)
-
-</ArticleCard>
-</Column>
-</Row>
+To continue the mainframe portion of the lab, select the lab exercises in the upper left corner.

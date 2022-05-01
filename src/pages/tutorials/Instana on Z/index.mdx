@@ -6,7 +6,7 @@ description:
 
 <AnchorLinks>
   <AnchorLink>2-1: Getting Started</AnchorLink>
-  <AnchorLink>2-1: Analyzing zHybridApp</AnchorLink>
+  <AnchorLink>2-2: Analyzing zHybridApp</AnchorLink>
   <AnchorLink>2-3: Problem Analysis Using IBM Instana for z/OS</AnchorLink>
   <AnchorLink>2-4: Understanding Dependencies Using IBM Instana for z/OS</AnchorLink>
   <AnchorLink>2-5: Summary</AnchorLink>
@@ -22,7 +22,7 @@ The lab environment is running in a live z/OS environment and is passing informa
 ## 2-1: Getting Started
 
 Begin by logging into the Soleil lab environment.  You should see a picture of a desktop system.  Click on the system to login.
-After logging in, launch the Chrome browser.   The browser will open with 3 tabs
+After logging in, launch the Chrome browser. The browser will open with 3 tabs
 
   ![](images/browsertab.png)
 
@@ -65,7 +65,7 @@ Click in the upper right area of the display and select ‘Last Hour’ if it ha
 
 Note that in the bottom center portion of the display you will see the ‘Top Services’ portion of the display.  In z/OS context the Top Services will include key mainframe resources, such as CICS regions, Db2 on z/OS databases and z/OS Connect regions.
 
-  ![](images/Instana-shybriddetail.png)
+  ![](images/Instana-hybriddetail.png)
 
 Click on ‘View All Services’  under Top Services
 
@@ -114,7 +114,7 @@ You now see the display expand to show individual transactions listed towards th
 
 Click on cics/CPIH   to see detail for an individual request
 
-  ![](images/Instana-Indivrequest.png)
+  ![](images/Instana-indivrequest.png)
 
 You should now be looking at the detail for a selected transaction.
 
@@ -130,13 +130,13 @@ In the Calls display you can see that the call originated in a Service called za
 
 Note that on the right portion of the display you see information about the CICS transaction.  This includes the call type, and the CICS Task Number.  The Task Number is an important item of information to identify the specific CICS task that executed the transaction.
 
-  ![](images/Instana-callsequencemarker.png)
+  ![](images/Instana-callsequencemarkers.png)
 
 Note that underneath the cics/CPIH call you see other call information, including a call to read a VSAM file, a call to a Db2 database (DSNA), and a CSMI transaction call to another CICS Region (CICSTIVB).
 You may click on other items in the call sequence for more information
 Click on VSAM File
 
-  ![](images/Instana-callsequenceconc.png)
+  ![](images/Instana-callsequenceconcl.png)
 
 You will see that this portion of the transaction flow is a call to a VSAM file allocated to the CICS Region.
 Click on CSMI
@@ -164,11 +164,11 @@ You are now looking at the Summary view for the z/OS Connect Service.  This show
 
 Click on Analyze Calls
 
-  ![](images/Instana-zossconnectcalls.png)
+  ![](images/Instana-zosconnectcalls.png)
 
 You should now be looking at the call overview for the z/OS Connect Service.
 
-   ![](images/Instana-zossconnectcalloverview.png)
+   ![](images/Instana-zosconnectcalloverview.png)
 
 This display shows call counts, erroneous calls (if any), call latency and Endpoint Names referenced by the application.  In this example z/OS Connect is invoking an endpoint called catalog.
 Click on catalog under Endpoint Name
@@ -314,12 +314,12 @@ You should now be looking at additional information on the application flow.  In
 Note that each icon shows call counts, latency time and error percentage for the selected application flow.
 **Click on the icon to the left to see animated flows.**
 
-  ![](images/Instana-animated-flows.png)
+  ![](images/Instana-animated-flow.png)
 
 From the dependencies display you may want to drill down to see call detail for the application flow.
 **Click on ‘Analyze calls’**
 
-  ![](images/Instana-depencency-analyze.png)
+  ![](images/Instana-depenency-analyze.png)
 
 You are now looking at the Analytics display.  Note on this display you see call counts and latency information for the transaction requests.  
 Note that in the Groups section of the display you will see one endpoint name, in this example it is catalog.

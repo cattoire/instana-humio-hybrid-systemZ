@@ -90,28 +90,28 @@ You now return back to the full Infrastructure map view.
 
 **Click on the k8s-bstern2 zone** which contains a kubernetes cluster.
 
-    ![](images/k8s-bstern2-zone.png)
+![](images/k8s-bstern2-zone.png)
 
 **Click on Open Dashboard**
 ![](images/k8s-bstern2-dashboard.png)
 
 You see now an overview of this cluster and the various nodes it contains.
 
-    ![](images/zone-context.png)
+![](images/zone-context.png)
 
 This is due to the fact that this zone is setup to filter the nodes belonging to this Kubernetes cluster. You can now also drill down in this Kubernetes context, by **clicking on the Stack drop down**. The Kubernetes context shows you information which is relevant from a viewpoint of the operator managing this cluster. He can now see which PODs are running onto it.
 
-    ![](images/kub-context.png)
+![](images/kub-context.png)
 
 From here you can also switch to the Infrastructure context where you could see information on the containers that are running.
 Even more interesting from a today viewpoint is that you can select one of the worker nodes and move up to the application context level.
 **Click on the first worker node**
 
-    ![](images/select-worker.png)
+![](images/select-worker.png)
 
 Now back from the stack drop down, **click on application view** This shows you which applications are running in this context.
 
-    ![](images/application-context.png)
+![](images/application-context.png)
 
 ---
 
@@ -174,7 +174,7 @@ What we could already have noticed in the previous steps is that there is a quit
 
 You can now get a better insight in what is going on by clicking on one of the red bars and then selecting View in Analyze.
 
-    ![](images/qotd-analyze.png)
+![](images/qotd-analyze.png)
 
 This shows a filtering of the various calls that cause errors in the context of the quote of the day application in the selected time frame.
 
@@ -186,15 +186,15 @@ The drill down allows me now to perform a root cause analysis. **Click on the QM
 
 Notice that this corresponds to some PUT calls towards an MQ instance. If you **click on the PUT call** you get a view of the detailed stack trace of this call
 
-    ![](images/put-call.png)
+![](images/put-call.png)
 
 **Scroll down on this screen to see a full detailed stack trace**
 
-    ![](images/stack-trace.png)
+![](images/stack-trace.png)
 
 Selecting the bottom of the stack trace (erronuous put on the queue manager) you will see the actual error message.
 
-    ![](images/stack-trace-error.png)
+![](images/stack-trace-error.png)
 
 Looking at the detail of the message we note that there is an actual MQ error message which indicates that this queue is full.
 
@@ -202,7 +202,7 @@ Looking at the detail of the message we note that there is an actual MQ error me
 
 In this way we quite drilled down to the root cause of this problem, which is nice, but Instana will help you even more. If we take a good look at the menu bar on the left of the screen we notice a red indicator on the events icon.
 
-    ![](images/event-indicator.png)
+![](images/event-indicator.png)
 
 Click on the Events which opens the Event dashboard page
 

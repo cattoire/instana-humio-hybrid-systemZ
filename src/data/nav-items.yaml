@@ -3,8 +3,6 @@
     - path: /
 - title: Think Lab 1201 - Using Instana to achieve AI-enhanced enterprise observability—including the mainframe
   pages:
-    - title: Installation
-      path: /tutorials/Install
     - title: Explore Instana
       path: /tutorials/Explore
     - title: Instana and the mainframe

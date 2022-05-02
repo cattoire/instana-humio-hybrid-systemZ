@@ -42,7 +42,7 @@ The first place we will look at is the Infrstructure View. Here you will discove
 
 You should now see a map as in the image below, showing the discovered infrastructure. Notice that it is organized in zones which is a mechanism to group the data from a number of agents together.
 
-![](images/infrastructure-map.png)
+![](images/Infrastructure-map.png)
 
 You can filter this map by entering queries in the top bar. For example **enter "Raleigh"** in the search bar to filter out one zone.
 You get a view containing only the infrastructure which sits in the defined Raleigh Datacenter zone.
@@ -89,8 +89,6 @@ You now return back to the full Infrastructure map view.
 ![](images/k8s-bstern2.png)
 
 **Click on the k8s-bstern2 zone** which contains a kubernetes cluster.
-
-![](images/k8s-bstern2-zone.png)
 
 **Click on Open Dashboard**
 ![](images/k8s-bstern2-dashboard.png)
@@ -147,8 +145,8 @@ For example **hover over the qotd-author** service.
 ![](images/qotd-author.png)
 
 By **clicking on the service** you get access to more details. You can jump to the dashboard for this specific service, you can analyze the call stack details or you can get a look at the call flow.
-Select **call flow**
-![](images/select-flow.png)
+Select **Go to flow**
+![](images/flow-click.png)
 
 This shows a view where you clearly see which component calls what other component.
 ![](images/call-flow.png)
@@ -166,11 +164,11 @@ In this case we see for example that the qotd-image service is responsible for t
 
 Now move back to the Qute of the Day application Dashboard.
 
-![](images/qoth-dashboard.png)
+![](images/qotd-dashboard.png)
 
 What we could already have noticed in the previous steps is that there is a quite large number of erronuous calls being shown on this dashboard.
 
-![](images/qotd-erronuous.png)
+![](images/qotd-erronuous.png) 
 
 You can now get a better insight in what is going on by clicking on one of the red bars and then selecting View in Analyze.
 

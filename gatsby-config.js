@@ -9,9 +9,9 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        name: 'Carbon Design Gatsby Theme',
+        name: 'Think Lab 1201 - Using Instana to achieve AI-enhanced enterprise observability—including the mainframe',
         icon: 'src/images/favicon.svg',
-        short_name: 'Gatsby Theme Carbon',
+        short_name: 'Instana',
         start_url: '/',
         background_color: '#ffffff',
         theme_color: '#161616',

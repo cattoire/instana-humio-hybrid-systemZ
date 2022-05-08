@@ -65,14 +65,41 @@ With the drop down you can select historical data to see how things have evolved
 
 ![](images/history-selector.png)
 
-You can now also drill down in the services which were discoverd by the agent on this machine. **Click on one of the ACE Integration servers** which you see in the interfaces list on the machine overview.
+You can now also drill down in the objects which were discovered by the agent on this machine. **Click on one of the ACE Integration servers** which you see in the interfaces list on the machine overview. Best one to look at ist the EG2 instance as it is the most used one in this sample setup.
 
 ![](images/ace-interface-select.png)
 
-You now get some details on this service running on the machine. You see for example that it is a JVM, you can analyze the memory consumption and if you scroll down the message flows it is running.
+You now get some details on this object running on the machine. You see for example that it is a JVM, you can analyze the memory consumption and if you scroll down the message flows it is running.
 
 ![](images/ace-details.png)
 
+You can also see how this messaging object fits into a flow. **Click on the flow tab**
+
+![](images/flow-tab.png)
+
+You now see how this messagig object is being used.
+
+![](images/flow-details.png)
+
+Another way to look at infrastructure is to use the comparison tables. To do so click on the infrastructure icon in the left tool.
+
+![](images/Infra-click.png)
+
+Now click on the Comparison Table tab at the top left of the screen 
+
+![](images/comparison-click.png)
+
+This shows you the comparison table. By default the subject of the table is the Hosts and the metric shown is the CPU usage
+
+![](images/comparison-table.png)
+
+You can select other topics in the Table content drop down.
+
+![](images/table-content-dropdown.png)
+
+**Select "CRI-O Containers"** This will show you a similar table but now on the CPU usage of the different containers in our environment.
+
+![](images/crio-containers.png)
 ---
 
 ## 1-2: Exploring Context Information
